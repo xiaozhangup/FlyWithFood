@@ -10,36 +10,23 @@ import org.jetbrains.annotations.NotNull;
 public class BukkitExpPoint extends ExpPointEnergy {
     @Override
     public void cost(@NotNull FWFUser user, @NotNull Number value) {
-        if (value.doubleValue() == 0) {
+        if (value.intValue() == 0) {
             return;
         }
         Player target = user.getPlayer();
-        if (value.floatValue() < -1f || value.floatValue() > 1f) {
-            throw new IllegalArgumentException("在 " + getName() + " 模式中，Cost项∈[-1.0, 1.0].小数位可精确到6位.当前为 " + value.floatValue() + " , 您也可尝试 " + new BukkitExpLevel().getName() + " 模式");
-        }
-        if (target.getLevel() <= 0) {
+        if (target.getTotalExperience() <= 0) {
             return;
         }
-        if (target.getExp() - value.floatValue() < 0f) {
+        if (target.getTotalExperience() - value.intValue() > 0) {
             Bukkit.getScheduler().runTask(FlyWithFood.INSTANCE, () -> {
-                target.setLevel(target.getLevel() - 1);
-                target.setExp(1f + target.getExp() - value.floatValue());
+                target.setTotalExperience(target.getTotalExperience() - value.intValue());
             });
-        } else if (target.getExp() - value.floatValue() > 1f) {
-            Bukkit.getScheduler().runTask(FlyWithFood.INSTANCE, () -> {
-                target.setLevel(target.getLevel() + 1);
-                target.setExp(target.getExp() - value.floatValue() - 1f);
-            });
-        } else {
-            Bukkit.getScheduler().runTask(FlyWithFood.INSTANCE, () ->
-                    target.setExp(target.getExp() - value.floatValue())
-            );
         }
     }
 
     @Override
     public @NotNull Integer getNow(FWFUser user) {
         Player target = user.getPlayer();
-        return target.getLevel();
+        return target.getTotalExperience();
     }
 }

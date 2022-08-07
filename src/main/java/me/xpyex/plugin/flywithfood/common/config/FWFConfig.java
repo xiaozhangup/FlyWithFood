@@ -6,8 +6,8 @@ public class FWFConfig {
     public final JsonObject config;
     public final JsonObject groups;
     public final int version;
-    public final double cost;
-    public final double disable;
+    public final Integer cost;
+    public final Integer disable;
     public final JsonObject languages;
     public final String language;
     public final String mode;
@@ -21,8 +21,8 @@ public class FWFConfig {
         this.config = config;
         this.groups = this.config.get("Groups").getAsJsonObject();  //分组
         this.version = this.config.get("ConfigVersion").getAsInt();  //配置文件的版本
-        this.cost = this.config.get("Cost").getAsDouble(); //每秒消耗的数值，可为饥饿值或经验值
-        this.disable = this.config.get("Disable").getAsDouble(); //消耗至多少关闭飞行
+        this.cost = this.config.get("Cost").getAsInt(); //每秒消耗的数值，可为饥饿值或经验值
+        this.disable = this.config.get("Disable").getAsInt(); //消耗至多少关闭飞行
         this.languages = this.config.get("Languages").getAsJsonObject();
         this.language = this.config.get("Language").getAsString();
         this.mode = this.config.get("CostMode").getAsString();
